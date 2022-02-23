@@ -1,2 +1,37 @@
-# frp-flyapp
-Fast reverse proxy on fly.io
+# frp on fly.io
+[Fast reverse proxy](https://github.com/fatedier/frp) on [fly.io](https://fly.io)
+
+Run your own frp tunnel for free (within free tier) on fly.io
+
+Now you can have ngrok TCP/UDP tunnel with the ports you want, not randomly generated ones on ngrok unless you [pay for the pro monthly](https://ngrok.com/pricing).
+
+## fly.io Deployment
+You need [flyctl](https://github.com/superfly/flyctl)
+
+1. Clone this repo
+2. Create an app on fly.io `fly launch --copy-config --name app-name`
+3. To deploy, type y if prompted to deploy now.
+4. Try to connect to frps using `server_addr = app-name.fly.dev` and `server_port = 7000` in frpc.ini
+
+You can also view https://app-name.fly.dev in browser to view the frps dashboard.
+
+## Change server config
+Type `fly deploy -a app-name` on the repository after editing frps.ini
+
+## KCP support
+To use KCP instead of TCP (like for game servers) to reduce latency:
+
+1. Uncomment frp KCP server and comment frp TCP server in fly.toml
+2. Uncomment For KCP connection and comment For TCP connection in frps.ini
+
+Since in fly.io, it is [required to bind to `fly-global-services`](https://fly.io/docs/app-guides/udp-and-tcp/) in order for UDP to work, but frp only allow to bind in one address, so we need to disable TCP if you want to use KCP as TCP does not work on `fly-global-services`.
+
+### fly.io price
+fly.io requires a credit card in order to work, if you don't have a credit card or if you are afraid that fly.io will charge you so much, it is recommend to buy credits.
+
+### More infos
+If you are tunneling HTTP apps instead of TCP/UDP, I recommend to just use [Cloudflare Tunnel](https://www.cloudflare.com/products/tunnel/).
+
+[anderspitman/awesome-tunneling](https://github.com/anderspitman/awesome-tunneling)
+
+# 🖕 CGNAT
