@@ -57,7 +57,7 @@ kill_timeout = 120
     restart_limit = 0
     timeout = "2s"
 
-# frp TCP tunnel
+# frp TCP tunnel (example for Minecraft server)
 [[services]]
   internal_port = 25565
   protocol = "tcp"
@@ -69,3 +69,16 @@ kill_timeout = 120
 
   [[services.ports]]
     port = 25565
+
+# frp UDP tunnel (example for torrent tracker, requires bind_addr = fly-global-services in frpc.ini)
+[[services]]
+  internal_port = 6969
+  protocol = "udp"
+
+  [services.concurrency]
+    hard_limit = 25
+    soft_limit = 20
+    type = "connections"
+
+  [[services.ports]]
+    port = 6969

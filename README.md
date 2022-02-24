@@ -11,12 +11,17 @@ You need [flyctl](https://github.com/superfly/flyctl)
 1. Clone this repo
 2. Create an app on fly.io `fly launch --copy-config --name app-name`
 3. To deploy, type y if prompted to deploy now.
-4. Try to connect to frps using `server_addr = app-name.fly.dev` and `server_port = 7000` in frpc.ini
+4. Set environment variables `fly secrets set -a app-name FRP_TOKEN=12345678 FRP_DASH_USER=admin FRP_DASH_PWD=admin`
+5. Try to connect to frps using `server_addr = app-name.fly.dev` and `server_port = 7000` in frpc.ini
 
 You can also view https://app-name.fly.dev in browser to view the frps dashboard.
 
 ## Change server config
 Type `fly deploy -a app-name` on the repository after editing frps.ini
+
+## Switch
+Suspend frp `fly suspend app-name`\
+Resume frp `fly resume app-name`
 
 ## KCP support
 To use KCP instead of TCP (like for game servers) to reduce latency:
