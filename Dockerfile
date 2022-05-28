@@ -1,5 +1,5 @@
-FROM alpine:3
-ENV VERSION 0.39.1
+FROM alpine:latest
+ENV VERSION 0.43.0
 WORKDIR app/
 RUN wget https://github.com/fatedier/frp/releases/download/v${VERSION}/frp_${VERSION}_linux_amd64.tar.gz && \
     tar -xf frp_${VERSION}_linux_amd64.tar.gz --strip-components 1 frp_${VERSION}_linux_amd64/frps && \

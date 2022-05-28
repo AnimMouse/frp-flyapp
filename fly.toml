@@ -1,10 +1,10 @@
 kill_signal = "SIGTERM"
 kill_timeout = 120
 
-# frp TCP server
+# frp KCP server
 [[services]]
   internal_port = 7000
-  protocol = "tcp"
+  protocol = "udp"
 
   [services.concurrency]
     hard_limit = 25
@@ -14,16 +14,10 @@ kill_timeout = 120
   [[services.ports]]
     port = 7000
 
-  [[services.tcp_checks]]
-    grace_period = "1s"
-    interval = "1m"
-    restart_limit = 0
-    timeout = "2s"
-
-# frp KCP server
+# frp TCP server
 #[[services]]
 #  internal_port = 7000
-#  protocol = "udp"
+#  protocol = "tcp"
 #
 #  [services.concurrency]
 #    hard_limit = 25
@@ -32,6 +26,12 @@ kill_timeout = 120
 #
 #  [[services.ports]]
 #    port = 7000
+#
+#  [[services.tcp_checks]]
+#    grace_period = "1s"
+#    interval = "1m"
+#    restart_limit = 0
+#    timeout = "2s"
 
 # frp dashboard and metrics
 [[services]]
