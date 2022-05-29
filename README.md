@@ -28,7 +28,7 @@ Suspend frp `fly suspend app-name`\
 Resume frp `fly resume app-name`
 
 ## TCP or UDP tunnel, not both
-Since in fly.io, it is [required to bind to `fly-global-services`](https://fly.io/docs/app-guides/udp-and-tcp/) in order for UDP to work, but frp `proxy_bind_addr` only allow to bind in one address, so we need to disable TCP if you want to use UDP as TCP does not work on `fly-global-services`.
+Since in fly.io, it is [required to bind to `fly-global-services`](https://fly.io/docs/app-guides/udp-and-tcp/#the-fly-global-services-address) in order for UDP to work, but frp `proxy_bind_addr` only allow to bind in one address, so we need to disable TCP if you want to use UDP as TCP does not work on `fly-global-services`.
 
 You need to have a separate frp instance if you need to tunnel both TCP and UDP. One for TCP using `proxy_bind_addr = 0.0.0.0` and one for UDP using `proxy_bind_addr = fly-global-services`.
 
@@ -46,18 +46,18 @@ protocol = kcp
 token = 12345678
 
 # TCP tunnel, requires proxy_bind_addr = 0.0.0.0 in frps.ini
-[minecraft]
+[minecraft-java]
 type = tcp
 local_ip = 127.0.0.1
 local_port = 25565
 remote_port = 25565
 
 # UDP tunnel, requires proxy_bind_addr = fly-global-services in frps.ini
-[torrent-tracker]
+[minecraft-bedrock]
 type = udp
 local_ip = 127.0.0.1
-local_port = 25565
-remote_port = 25565
+local_port = 19132
+remote_port = 19132
 ```
 
 ### fly.io free tier
@@ -67,6 +67,13 @@ fly.io requires a credit card in order to work, if you don't have a credit card 
 If you are tunneling HTTP apps instead of TCP/UDP, I recommend to just use [Cloudflare Tunnel](https://www.cloudflare.com/products/tunnel/).\
 You can also tunnel HTTP apps on this frp by using a custom port like 8080.\
 If you need to use standard 80 and 443 port, you need to disable the frps dashboard.
+
+### IPv6 Support
+If you have IPv6, congratulations, [you don't need this tunnel](https://www.reddit.com/r/networkingmemes/comments/sif407/imagine_network_engineers_time_gone_into/).
+
+To enable IPv6 in control plane, set `bind_addr = ::` in frps.ini. Take note that KCP does not work in IPv6 as [`fly-global-services` does not support IPv6](https://fly.io/docs/app-guides/udp-and-tcp/#udp-won-t-work-over-ipv6) so you would need to use TCP if you use IPv6 in control plane.
+
+To enable IPv6 in data plane, set `proxy_bind_addr = ::` in frps.ini. Take note that UDP does not work in IPv6 as [`fly-global-services` does not support IPv6](https://fly.io/docs/app-guides/udp-and-tcp/#udp-won-t-work-over-ipv6) so you can't tunnel UDP in IPv6.
 
 ### More infos
 [anderspitman/awesome-tunneling](https://github.com/anderspitman/awesome-tunneling)

@@ -57,7 +57,7 @@ kill_timeout = 120
     restart_limit = 0
     timeout = "2s"
 
-# frp TCP tunnel (example for Minecraft server, requires proxy_bind_addr = 0.0.0.0 in frps.ini)
+# frp TCP tunnel (example for Minecraft Java server, requires proxy_bind_addr = 0.0.0.0 in frps.ini)
 [[services]]
   internal_port = 25565
   protocol = "tcp"
@@ -70,9 +70,9 @@ kill_timeout = 120
   [[services.ports]]
     port = 25565
 
-# frp UDP tunnel (example for torrent tracker, requires proxy_bind_addr = fly-global-services in frps.ini)
+# frp UDP tunnel (example for Minecraft Bedrock server, requires proxy_bind_addr = fly-global-services in frps.ini)
 #[[services]]
-#  internal_port = 6969
+#  internal_port = 19132
 #  protocol = "udp"
 #
 #  [services.concurrency]
@@ -81,4 +81,4 @@ kill_timeout = 120
 #    type = "connections"
 #
 #  [[services.ports]]
-#    port = 6969
+#    port = 19132
