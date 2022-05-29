@@ -73,7 +73,7 @@ If you have IPv6, congratulations, [you don't need this tunnel](https://www.redd
 
 To enable IPv6 in control plane, set `bind_addr = ::` in frps.ini. Take note that KCP does not work in IPv6 as [`fly-global-services` does not support IPv6](https://fly.io/docs/app-guides/udp-and-tcp/#udp-won-t-work-over-ipv6) so you would need to use TCP if you use IPv6 in control plane.
 
-To enable IPv6 in data plane, set `proxy_bind_addr = ::` in frps.ini. Take note that UDP does not work in IPv6 as [`fly-global-services` does not support IPv6](https://fly.io/docs/app-guides/udp-and-tcp/#udp-won-t-work-over-ipv6) so you can't tunnel UDP in IPv6.
+To enable IPv6 in data plane, set `proxy_bind_addr = ::` in frps.ini and `local_ip = ::` in frpc.ini. Take note that UDP does not work in IPv6 as [`fly-global-services` does not support IPv6](https://fly.io/docs/app-guides/udp-and-tcp/#udp-won-t-work-over-ipv6) so you can't tunnel UDP in IPv6.
 
 ### More infos
 [anderspitman/awesome-tunneling](https://github.com/anderspitman/awesome-tunneling)
