@@ -24,8 +24,8 @@ Type `fly deploy -a app-name` on the repository after editing frps.ini
 ## Switch
 fly.io runs app 24/7, if you are not using your tunnel for a while, it is recommended to suspend it to conserve free tier and resources.
 
-Suspend frp `fly suspend app-name`\
-Resume frp `fly resume app-name`
+Suspend frp `fly scale count 0 -a app-name`\
+Resume frp `fly scale count 1 -a app-name`
 
 ## TCP or UDP tunnel, not both
 Since in fly.io, it is [required to bind to `fly-global-services`](https://fly.io/docs/app-guides/udp-and-tcp/#the-fly-global-services-address) in order for UDP to work, but frp `proxy_bind_addr` only allow to bind in one address, so we need to disable TCP if you want to use UDP as TCP does not work on `fly-global-services`.
@@ -73,7 +73,7 @@ If you have IPv6, congratulations, [you don't need this tunnel](https://www.redd
 
 To enable IPv6 in control plane, set `bind_addr = ::` in frps.ini. Take note that KCP does not work in IPv6 as [`fly-global-services` does not support IPv6](https://fly.io/docs/app-guides/udp-and-tcp/#udp-won-t-work-over-ipv6) so you would need to use TCP if you use IPv6 in control plane.
 
-To enable IPv6 in data plane, set `proxy_bind_addr = ::` in frps.ini and `local_ip = ::` in frpc.ini. Take note that UDP does not work in IPv6 as [`fly-global-services` does not support IPv6](https://fly.io/docs/app-guides/udp-and-tcp/#udp-won-t-work-over-ipv6) so you can't tunnel UDP in IPv6.
+To enable IPv6 in data plane, set `proxy_bind_addr = ::` in frps.ini and `local_ip = ::1` in frpc.ini. Take note that UDP does not work in IPv6 as [`fly-global-services` does not support IPv6](https://fly.io/docs/app-guides/udp-and-tcp/#udp-won-t-work-over-ipv6) so you can't tunnel UDP in IPv6.
 
 ### More infos
 [anderspitman/awesome-tunneling](https://github.com/anderspitman/awesome-tunneling)

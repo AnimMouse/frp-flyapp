@@ -1,6 +1,7 @@
 kill_signal = "SIGTERM"
 kill_timeout = 120
 
+# frp control plane
 # frp KCP server
 [[services]]
   internal_port = 7000
@@ -57,7 +58,8 @@ kill_timeout = 120
     restart_limit = 0
     timeout = "2s"
 
-# frp TCP tunnel (example for Minecraft Java server, requires proxy_bind_addr = 0.0.0.0 in frps.ini)
+# frp data plane
+# frp TCP tunnel (example for Minecraft Java server, requires proxy_bind_addr = 0.0.0.0 (or :: in IPv6) in frps.ini)
 [[services]]
   internal_port = 25565
   protocol = "tcp"
