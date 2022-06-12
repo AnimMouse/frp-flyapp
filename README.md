@@ -9,17 +9,19 @@ Now you can have ngrok TCP/UDP tunnel with the ports you want, not randomly gene
 You need [flyctl](https://github.com/superfly/flyctl)
 
 1. Clone this repository.
-2. Create an app on fly.io `fly launch --copy-config --name app-name`.
-3. To deploy, type y if prompted to deploy now.
-4. Set environment variables `fly secrets set -a app-name FRP_TOKEN=12345678 FRP_DASH_USER=admin FRP_DASH_PWD=admin`.
-5. Try to connect to frps using `server_addr = app-name.fly.dev`, `server_port = 7000`, `protocol = kcp`, and `token = 12345678` in frpc.ini.
+2. Check if frp version in Dockerfile is latest, if not, change to the latest version.
+3. Create an app on fly.io `fly launch --copy-config --name app-name --no-deploy`.
+4. Select the region closest to you.
+5. Set environment variables. `fly secrets set -a app-name FRP_TOKEN=12345678 FRP_DASH_USER=admin FRP_DASH_PWD=admin`
+6. Deploy to fly.io `fly deploy -a app-name --remote-only`.
+7. Try to connect to frps using `server_addr = app-name.fly.dev`, `server_port = 7000`, `protocol = kcp`, and `token = 12345678` in frpc.ini.
 
 Don't forget to change the token so that others can't use your frp tunnel.
 
 You can also view https://app-name.fly.dev in browser to view the frps dashboard.
 
 ## Change server configuration
-Type `fly deploy -a app-name` on the repository after editing frps.ini
+Type `fly deploy -a app-name --remote-only` on the repository after editing frps.ini
 
 ## Switch
 fly.io runs app 24/7, if you are not using your tunnel for a while, it is recommended to suspend it to conserve free tier and resources.
@@ -35,10 +37,10 @@ You need to have a separate frp instance if you need to tunnel both TCP and UDP.
 ## KCP Protocol
 [KCP](https://github.com/skywind3000/kcp/blob/master/README.en.md) (a protocol built on UDP) is used by default so that a TCP meltdown (TCP over TCP tunnel) will not happen and to reduce latency (like for game servers).
 
-You can also use TCP if KCP is not working for you by uncommenting and commenting the lines in frps.ini and fly.toml
+You can also use TCP if KCP is not working for you. Check the [wiki](https://github.com/AnimMouse/frp-flyapp/wiki/Use-TCP-in-control-plane) for tutorial.
 
 ## Example frpc.ini
-```
+```ini
 [common]
 server_addr = app-name.fly.dev
 server_port = 7000
@@ -66,7 +68,7 @@ fly.io requires a credit card in order to work, if you don't have a credit card 
 ### HTTP Tunneling
 If you are tunneling HTTP apps instead of TCP/UDP, I recommend to just use [Cloudflare Tunnel](https://www.cloudflare.com/products/tunnel/).\
 You can also tunnel HTTP apps on this frp by using a custom port like 8080.\
-If you need to use standard 80 and 443 port, you need to disable the frps dashboard.
+If you need to use standard 80 and 443 port, you need to disable the frps dashboard. Check the [wiki](https://github.com/AnimMouse/frp-flyapp/wiki/HTTP-Tunneling) for tutorial.
 
 ### IPv6 Support
 If you have IPv6, congratulations, [you don't need this tunnel](https://www.reddit.com/r/networkingmemes/comments/sif407/imagine_network_engineers_time_gone_into/).

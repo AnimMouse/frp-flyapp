@@ -34,7 +34,7 @@ kill_timeout = 120
 #    restart_limit = 0
 #    timeout = "2s"
 
-# frp dashboard and metrics
+# frp HTTP server (for dashboard or HTTP tunnel)
 [[services]]
   internal_port = 8080
   protocol = "tcp"
