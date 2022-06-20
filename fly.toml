@@ -58,6 +58,19 @@ kill_timeout = 120
     restart_limit = 0
     timeout = "2s"
 
+# frp XTCP P2P (requires bind_addr = fly-global-services in frps.ini)
+[[services]]
+  internal_port = 7001
+  protocol = "udp"
+
+  [services.concurrency]
+    hard_limit = 25
+    soft_limit = 20
+    type = "connections"
+
+  [[services.ports]]
+    port = 7001
+
 # frp data plane
 # frp TCP tunnel (example for Minecraft Java server, requires proxy_bind_addr = 0.0.0.0 (or :: in IPv6) in frps.ini)
 [[services]]

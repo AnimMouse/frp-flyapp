@@ -39,6 +39,9 @@ You need to have a separate frp instance if you need to tunnel both TCP and UDP.
 
 You can also use TCP if KCP is not working for you. Check the [wiki](https://github.com/AnimMouse/frp-flyapp/wiki/Use-TCP-in-control-plane) for tutorial.
 
+## XTCP P2P
+You can use this frp tunnel like a STUN server. `bind_addr` should be set in `fly-global-services` in order for XTCP to work. This feature is enabled by default.
+
 ## Example frpc.ini
 ```ini
 [common]
