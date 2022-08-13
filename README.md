@@ -5,6 +5,18 @@ Run your own frp tunnel for free (within free tier) on fly.io
 
 Now you can have ngrok TCP/UDP tunnel with the ports you want, not randomly generated ports on ngrok unless you [pay for the pro monthly](https://ngrok.com/pricing).
 
+```mermaid
+flowchart LR
+  User --> |Data Plane| frps
+  frps <--> |Control Plane| frpc
+  subgraph flyapp [fly.io App Server]
+  frps
+  end
+  subgraph ServerNoPublicIP [Server without Public IP]
+  frpc --> Service[TCP, UDP, or HTTP service]
+  end
+```
+
 ## fly.io Deployment
 You need [flyctl](https://github.com/superfly/flyctl)
 
