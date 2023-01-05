@@ -15,25 +15,6 @@ kill_timeout = 120
   [[services.ports]]
     port = 7000
 
-# frp TCP server
-#[[services]]
-#  internal_port = 7000
-#  protocol = "tcp"
-#
-#  [services.concurrency]
-#    hard_limit = 25
-#    soft_limit = 20
-#    type = "connections"
-#
-#  [[services.ports]]
-#    port = 7000
-#
-#  [[services.tcp_checks]]
-#    grace_period = "1s"
-#    interval = "1m"
-#    restart_limit = 0
-#    timeout = "2s"
-
 # frp HTTP server (for dashboard or HTTP tunnel)
 [[services]]
   internal_port = 8080
@@ -72,18 +53,6 @@ kill_timeout = 120
     port = 7001
 
 # frp data plane
-# frp TCP tunnel (example for Minecraft Java server, requires proxy_bind_addr = 0.0.0.0 (or :: in IPv6) in frps.ini)
-[[services]]
-  internal_port = 25565
-  protocol = "tcp"
-
-  [services.concurrency]
-    hard_limit = 25
-    soft_limit = 20
-    type = "connections"
-
-  [[services.ports]]
-    port = 25565
 
 # frp UDP tunnel (example for Minecraft Bedrock server, requires proxy_bind_addr = fly-global-services in frps.ini)
 #[[services]]
