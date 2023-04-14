@@ -38,8 +38,8 @@ Type `fly deploy -a app-name --remote-only` on the repository after editing frps
 ## Switch
 fly.io runs app 24/7, if you are not using your tunnel for a while, it is recommended to suspend it to conserve free tier and resources.
 
-Suspend frp `fly scale count 0 -a app-name`\
-Resume frp `fly scale count 1 -a app-name`
+* Suspend frp `fly scale count 0 -a app-name`
+* Resume frp `fly scale count 1 -a app-name`
 
 ## TCP or UDP tunnel, not both
 Since in fly.io, it is [required to bind to `fly-global-services`](https://fly.io/docs/app-guides/udp-and-tcp/#the-fly-global-services-address) in order for UDP to work, but frp `proxy_bind_addr` only allow to bind in one address, so we need to disable TCP if you want to use UDP as TCP does not work on `fly-global-services`.
@@ -47,7 +47,7 @@ Since in fly.io, it is [required to bind to `fly-global-services`](https://fly.i
 You need to have a separate frp instance if you need to tunnel both TCP and UDP. One for TCP using `proxy_bind_addr = 0.0.0.0` and one for UDP using `proxy_bind_addr = fly-global-services`.
 
 ## KCP Protocol
-[KCP](https://github.com/skywind3000/kcp/blob/master/README.en.md) (a protocol built on UDP) is used by default so that a TCP meltdown (TCP over TCP tunnel) will not happen and to reduce latency (like for game servers).
+[KCP](https://github.com/skywind3000/kcp/blob/master/README.en.md) (a protocol built on UDP) is used by default ~~so that a TCP meltdown (TCP over TCP tunnel) will not happen~~ and to reduce latency (like for game servers).
 
 You can also use TCP if KCP is not working for you. Check the [wiki](https://github.com/AnimMouse/frp-flyapp/wiki/Use-TCP-in-control-plane) for tutorial.
 
@@ -88,11 +88,14 @@ If you need to use standard 80 and 443 port, you need to disable the frps dashbo
 ### IPv6 Support
 If you have IPv6, congratulations, [you don't need this tunnel](https://www.reddit.com/r/networkingmemes/comments/sif407/imagine_network_engineers_time_gone_into/).
 
-To enable IPv6 in control plane, set `bind_addr = ::` in frps.ini. Take note that KCP does not work in IPv6 as [`fly-global-services` does not support IPv6](https://fly.io/docs/app-guides/udp-and-tcp/#udp-won-t-work-over-ipv6) so you would need to use TCP if you use IPv6 in control plane.
+To enable IPv6 in control plane, set `bind_addr = ::` in frps.ini. Take note that KCP does not work in IPv6 as [`fly-global-services` does not support IPv6] so you would need to use TCP if you use IPv6 in control plane.
 
-To enable IPv6 in data plane, set `proxy_bind_addr = ::` in frps.ini and `local_ip = ::1` in frpc.ini. Take note that UDP does not work in IPv6 as [`fly-global-services` does not support IPv6](https://fly.io/docs/app-guides/udp-and-tcp/#udp-won-t-work-over-ipv6) so you can't tunnel UDP in IPv6.
+To enable IPv6 in data plane, set `proxy_bind_addr = ::` in frps.ini and `local_ip = ::1` in frpc.ini. Take note that UDP does not work in IPv6 as [`fly-global-services` does not support IPv6] so you can't tunnel UDP in IPv6.
+
+[`fly-global-services` does not support IPv6]: https://fly.io/docs/app-guides/udp-and-tcp/#udp-won-t-work-over-ipv6
 
 ### More infos
-[anderspitman/awesome-tunneling](https://github.com/anderspitman/awesome-tunneling)
+* [anderspitman/awesome-tunneling](https://github.com/anderspitman/awesome-tunneling)
 
 # 🖕 Carrier-grade Network Address Translation (CGNAT)
+* [Is NAT a conspiracy?](https://chatgptwith.me/posts/is-nat-a-conspiracy/)
