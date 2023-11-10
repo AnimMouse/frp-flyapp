@@ -1,99 +1,73 @@
 kill_signal = "SIGTERM"
-kill_timeout = 120
+kill_timeout = "2m0s"
 
 # frp control plane
-# frp KCP server
-[[services]]
-  internal_port = 7000
-  protocol = "udp"
-
-  [services.concurrency]
+# frp HTTP server (for dashboard or HTTP tunnel)
+[http_service]
+  internal_port = 8080
+  force_https = true
+  [http_service.concurrency]
+    type = "requests"
     hard_limit = 25
     soft_limit = 20
-    type = "connections"
+
+# frp KCP/QUIC server
+[[services]]
+  protocol = "udp"
+  internal_port = 7000
 
   [[services.ports]]
     port = 7000
+  [services.concurrency]
+    type = "connections"
+    hard_limit = 25
+    soft_limit = 20
 
 # frp TCP server
 #[[services]]
-#  internal_port = 7000
 #  protocol = "tcp"
-#
-#  [services.concurrency]
-#    hard_limit = 25
-#    soft_limit = 20
-#    type = "connections"
+#  internal_port = 7000
 #
 #  [[services.ports]]
 #    port = 7000
-#
-#  [[services.tcp_checks]]
-#    grace_period = "1s"
-#    interval = "1m"
-#    restart_limit = 0
-#    timeout = "2s"
-
-# frp HTTP server (for dashboard or HTTP tunnel)
-[[services]]
-  internal_port = 8080
-  protocol = "tcp"
-
-  [services.concurrency]
-    hard_limit = 25
-    soft_limit = 20
-    type = "connections"
-
-  [[services.ports]]
-    handlers = ["http"]
-    port = 80
-
-  [[services.ports]]
-    handlers = ["tls", "http"]
-    port = 443
-
-  [[services.tcp_checks]]
-    grace_period = "1s"
-    interval = "1m"
-    restart_limit = 0
-    timeout = "2s"
+#  [services.concurrency]
+#    type = "connections"
+#    hard_limit = 25
+#    soft_limit = 20
 
 # frp XTCP P2P (requires bind_addr = fly-global-services in frps.ini)
 [[services]]
-  internal_port = 7001
   protocol = "udp"
-
-  [services.concurrency]
-    hard_limit = 25
-    soft_limit = 20
-    type = "connections"
+  internal_port = 7001
 
   [[services.ports]]
     port = 7001
+  [services.concurrency]
+    type = "connections"
+    hard_limit = 25
+    soft_limit = 20
 
 # frp data plane
 # frp TCP tunnel (example for Minecraft Java server, requires proxy_bind_addr = 0.0.0.0 (or :: in IPv6) in frps.ini)
 [[services]]
-  internal_port = 25565
   protocol = "tcp"
-
-  [services.concurrency]
-    hard_limit = 25
-    soft_limit = 20
-    type = "connections"
+  internal_port = 25565
 
   [[services.ports]]
     port = 25565
+  [services.concurrency]
+    type = "connections"
+    hard_limit = 25
+    soft_limit = 20
 
 # frp UDP tunnel (example for Minecraft Bedrock server, requires proxy_bind_addr = fly-global-services in frps.ini)
 #[[services]]
-#  internal_port = 19132
 #  protocol = "udp"
-#
-#  [services.concurrency]
-#    hard_limit = 25
-#    soft_limit = 20
-#    type = "connections"
+#  internal_port = 19132
 #
 #  [[services.ports]]
 #    port = 19132
+#  [services.concurrency]
+#    type = "connections"
+#    hard_limit = 25
+#    soft_limit = 20
