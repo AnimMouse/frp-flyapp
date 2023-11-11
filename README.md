@@ -24,26 +24,26 @@ flowchart LR
 2. On your own fork, click Code, and click Codespaces tab.
 3. Click "Create codespace on main".
 4. Check if frp version in `Dockerfile` is latest, if not, change to the latest version.
-5. Login to flyctl by `fly auth login` or you can generate [access tokens](https://fly.io/user/personal_access_tokens) and paste it to `FLY_API_TOKEN` in Codespaces secrets.
+5. Login to flyctl by using `fly auth login` or you can generate [access tokens](https://fly.io/user/personal_access_tokens) and paste it to `FLY_API_TOKEN` in Codespaces secrets.
 6. Create an app on fly.io `fly launch --copy-config --name app-name --no-deploy`.
 7. Select the region closest to you.
 8. Set environment variables for frp server. `fly secrets set -a app-name FRP_TOKEN=12345678 FRP_DASH_USER=admin FRP_DASH_PWD=admin`
 9. Deploy to fly.io `fly deploy -a app-name --remote-only`.
 10. When asked to allocate a dedicated IPv4 address, yes.
-11. Try to connect to frps using `server_addr = app-name.fly.dev`, `server_port = 7000`, `protocol = kcp`, and `token = 12345678` in frpc.ini.
+11. Try to connect to frps using the [example frpc.toml](#example-frpctoml).
 
 ### Local
 You need [flyctl](https://github.com/superfly/flyctl) installed.
 
 1. Clone this repository.
 2. Check if frp version in `Dockerfile` is latest, if not, change to the latest version.
-3. Login to flyctl by `fly auth login`.
+3. Login to flyctl by using `fly auth login`.
 4. Create an app on fly.io `fly launch --copy-config --name app-name --no-deploy`.
 5. Select the region closest to you.
 6. Set environment variables for frp server. `fly secrets set -a app-name FRP_TOKEN=12345678 FRP_DASH_USER=admin FRP_DASH_PWD=admin`
 7. Deploy to fly.io `fly deploy -a app-name --remote-only`.
 8. When asked to allocate a dedicated IPv4 address, yes.
-9. Try to connect to frps using `server_addr = app-name.fly.dev`, `server_port = 7000`, `protocol = kcp`, and `token = 12345678` in frpc.ini.
+9. Try to connect to frps using the [example frpc.toml](#example-frpctoml).
 
 Don't forget to change the `app-name` and the `FRP_TOKEN` so that others can't use your frp tunnel.
 
@@ -71,27 +71,34 @@ You can also use TCP if KCP is not working for you. Check the [wiki](https://git
 ## XTCP P2P
 You can use this frp tunnel like a STUN server. `bind_addr` should be set in `fly-global-services` in order for XTCP to work. This feature is enabled by default.
 
-## Example frpc.ini
-```ini
-[common]
-server_addr = app-name.fly.dev
-server_port = 7000
-protocol = kcp
-token = 12345678
+## Example frpc.toml
+```toml
+serverAddr = "app-name.fly.dev"
+auth.token = "12345678"
 
-# TCP tunnel, requires proxy_bind_addr = 0.0.0.0 in frps.ini
-[minecraft-java]
-type = tcp
-local_ip = 127.0.0.1
-local_port = 25565
-remote_port = 25565
+# KCP connection
+serverPort = 7000
+transport.protocol = "kcp"
 
-# UDP tunnel, requires proxy_bind_addr = fly-global-services in frps.ini
-[minecraft-bedrock]
-type = udp
-local_ip = 127.0.0.1
-local_port = 19132
-remote_port = 19132
+# QUIC connection
+#serverPort = 7001
+#transport.protocol = "quic"
+
+# TCP tunnel, requires proxyBindAddr = "0.0.0.0" in frps.ini
+[[proxies]]
+name = "minecraft-java"
+type = "tcp"
+localIP = "127.0.0.1"
+localPort = 25565
+remotePort = 25565
+
+# UDP tunnel, requires proxyBindAddr = "fly-global-services" in frps.ini
+#[[proxies]]
+#name = "minecraft-bedrock"
+#type = "udp"
+#localIP = "127.0.0.1"
+#localPort = 19132
+#remotePort = 19132
 ```
 
 ### fly.io free tier
@@ -104,6 +111,8 @@ If you need to use standard 80 and 443 port, you need to disable the frps dashbo
 
 ### IPv6 support
 If you have IPv6, congratulations, [you don't need this tunnel](https://www.reddit.com/r/networkingmemes/comments/sif407/imagine_network_engineers_time_gone_into/).
+
+To allocate IPv6 in fly.io: `fly ips allocate-v6 -a app-name`
 
 To enable IPv6 in control plane, set `bind_addr = ::` in frps.ini. Take note that KCP does not work in IPv6 as [`fly-global-services` does not support IPv6] so you would need to use TCP if you use IPv6 in control plane.
 

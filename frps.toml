@@ -1,0 +1,24 @@
+# Control plane binding
+# frp KCP/QUIC connection
+bindAddr = "fly-global-services"
+kcpBindPort = 7000
+quicBindPort = 7001
+
+# frp TCP connection
+#bindAddr = "0.0.0.0"
+#bindPort = 7000
+
+# frp dashboard
+webServer.addr = "::"
+webServer.port = 8080
+webServer.user = "{{ .Envs.FRP_DASH_USER }}"
+webServer.password = "{{ .Envs.FRP_DASH_PWD }}"
+
+# Data plane binding
+# For TCP tunnels, set to 0.0.0.0 (or :: in IPv6)
+# For UDP tunnels, set to fly-global-services
+proxyBindAddr = "0.0.0.0"
+
+# frp authentication
+auth.method = "token"
+auth.token = "{{ .Envs.FRP_TOKEN }}"
