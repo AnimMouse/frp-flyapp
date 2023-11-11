@@ -48,7 +48,7 @@ kill_timeout = "2m0s"
 #    soft_limit = 20
 
 # frp data plane
-# frp TCP tunnel (example for Minecraft Java server, requires proxy_bind_addr = 0.0.0.0 (or :: in IPv6) in frps.ini)
+# frp TCP tunnel (example for Minecraft Java server, requires proxyBindAddr = "0.0.0.0" (or "::" in IPv6) in frps.toml)
 [[services]]
   protocol = "tcp"
   internal_port = 25565
@@ -60,7 +60,7 @@ kill_timeout = "2m0s"
     hard_limit = 25
     soft_limit = 20
 
-# frp UDP tunnel (example for Minecraft Bedrock server, requires proxy_bind_addr = fly-global-services in frps.ini)
+# frp UDP tunnel (example for Minecraft Bedrock server, requires proxyBindAddr = "fly-global-services" in frps.toml)
 #[[services]]
 #  protocol = "udp"
 #  internal_port = 19132

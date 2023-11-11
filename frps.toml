@@ -11,8 +11,8 @@ quicBindPort = 7001
 # frp dashboard
 webServer.addr = "::"
 webServer.port = 8080
-webServer.user = "{{ .Envs.FRP_DASH_USER }}"
-webServer.password = "{{ .Envs.FRP_DASH_PWD }}"
+webServer.user = "admin"
+webServer.password = "{{ .Envs.FRP_DASHBOARD_PWD }}"
 
 # Data plane binding
 # For TCP tunnels, set to 0.0.0.0 (or :: in IPv6)
