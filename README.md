@@ -3,17 +3,17 @@
 
 Run your own frp tunnel for free (within free tier) on fly.io
 
-Now you can have ngrok TCP/UDP tunnel with the ports you want, not randomly generated ports on ngrok unless you [pay for the pro monthly](https://ngrok.com/pricing).
+Now you can have ngrok TCP/UDP tunnel with the ports you want, not randomly generated ports on ngrok unless you [pay monthly](https://ngrok.com/pricing).
 
 ```mermaid
 flowchart LR
   User --> |Data Plane| frps
   frps <--> |Control Plane| frpc
   subgraph flyapp [fly.io App Server]
-  frps
+    frps
   end
   subgraph ServerNoPublicIP [Server without Public IP]
-  frpc --> Service[TCP, UDP, or HTTP service]
+    frpc --> Service[TCP, UDP, or HTTP service]
   end
 ```
 
@@ -25,11 +25,11 @@ flowchart LR
 3. Click "Create codespace on main".
 4. Check if frp version in `Dockerfile` is latest, if not, change to the latest version.
 5. Login to flyctl by using `fly auth login` or you can generate [access tokens](https://fly.io/user/personal_access_tokens) and paste it to `FLY_API_TOKEN` in Codespaces secrets.
-6. Create an app on fly.io `fly launch --copy-config --name app-name --no-deploy`.
-7. Select the region closest to you.
+6. Create an app on fly.io `fly launch --copy-config --name app-name --no-deploy --vm-memory 256`.
+7. When asked to tweak these settings before proceeding, enter yes if you want to tweak settings like selecting the region closest to you, otherwise, enter no.
 8. Set environment variables for frp server. `fly secrets set -a app-name FRP_TOKEN=12345678 FRP_DASHBOARD_PWD=admin`
-9. Deploy to fly.io `fly deploy -a app-name --ha=false --remote-only`.
-10. When asked to allocate a dedicated IPv4 address, yes.
+9. Deploy to fly.io `fly deploy -a app-name --ha=false`.
+10. When asked to allocate a dedicated IPv4 address, enter yes.
 11. Try to connect to frps using the [example frpc.toml](#example-frpctoml).
 
 ### Local
@@ -38,11 +38,11 @@ You need [flyctl](https://github.com/superfly/flyctl) installed.
 1. Clone this repository.
 2. Check if frp version in `Dockerfile` is latest, if not, change to the latest version.
 3. Login to flyctl by using `fly auth login`.
-4. Create an app on fly.io `fly launch --copy-config --name app-name --no-deploy`.
-5. Select the region closest to you.
+4. Create an app on fly.io `fly launch --copy-config --name app-name --no-deploy --vm-memory 256`.
+5. When asked to tweak these settings before proceeding, enter yes if you want to tweak settings like selecting the region closest to you, otherwise, enter no.
 6. Set environment variables for frp server. `fly secrets set -a app-name FRP_TOKEN=12345678 FRP_DASHBOARD_PWD=admin`
-7. Deploy to fly.io `fly deploy -a app-name --ha=false --remote-only`.
-8. When asked to allocate a dedicated IPv4 address, yes.
+7. Deploy to fly.io `fly deploy -a app-name --ha=false`.
+8. When asked to allocate a dedicated IPv4 address, enter yes.
 9. Try to connect to frps using the [example frpc.toml](#example-frpctoml).
 
 Don't forget to change the `app-name` and the `FRP_TOKEN` so that others can't use your frp tunnel.
@@ -50,7 +50,7 @@ Don't forget to change the `app-name` and the `FRP_TOKEN` so that others can't u
 You can also view https://app-name.fly.dev in browser to view the frps dashboard.
 
 ## Change server configuration
-Type `fly deploy -a app-name --remote-only` on the repository after editing frps.toml
+Type `fly deploy -a app-name` on the repository after editing frps.toml
 
 ## Switch
 fly.io runs app 24/7, if you are not using your tunnel for a while, it is recommended to suspend it to conserve free tier and resources.
@@ -120,5 +120,5 @@ To enable IPv6 in data plane, set `proxyBindAddr = "::"` in frps.toml and `local
 ### More infos
 * [anderspitman/awesome-tunneling](https://github.com/anderspitman/awesome-tunneling)
 
-# 🖕 Carrier-grade Network Address Translation (CGNAT)
+## 🖕 Carrier-grade Network Address Translation (CGNAT)
 * [Is NAT a conspiracy?](https://chatgptwith.me/posts/is-nat-a-conspiracy/)
