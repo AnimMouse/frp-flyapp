@@ -1,7 +1,10 @@
 # frp on fly.io
 [Fast reverse proxy](https://github.com/fatedier/frp) on [fly.io](https://fly.io)
 
-Run your own frp tunnel for free (within free tier) on fly.io
+Run your own frp tunnel ~~for free (within free tier)~~ on fly.io
+
+> [!IMPORTANT]
+> On 2024, fly.io will now charge $2/mo for a dedicated IPv4 address.
 
 Now you can have ngrok TCP/UDP tunnel with the ports you want, not randomly generated ports on ngrok unless you [pay monthly](https://ngrok.com/pricing).
 
