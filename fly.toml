@@ -10,14 +10,6 @@ kill_timeout = '2s'
 
 [build]
 
-[http_service]
-  internal_port = 80
-  force_https = true
-  auto_stop_machines = true
-  auto_start_machines = true
-  min_machines_running = 0
-  processes = ['app']
-
 [[vm]]
   memory = '256mb'
   cpu_kind = 'shared'
@@ -29,6 +21,18 @@ kill_timeout = '2s'
 
   [[services.ports]]
     port = 7000
+
+  [services.concurrency]
+    type = 'connections'
+    hard_limit = 25
+    soft_limit = 20
+
+[[services]]
+  protocol = 'udp'
+  internal_port = 7001
+
+  [[services.ports]]
+    port = 7001
 
   [services.concurrency]
     type = 'connections'
@@ -57,15 +61,10 @@ kill_timeout = '2s'
     timeout = '2s'
     grace_period = '1s'
 
+# expose more tcp ports below
+# 
 [[services]]
-  protocol = 'udp'
-  internal_port = 7001
-
+  protocol = 'tcp'
+  internal_port = 1234
   [[services.ports]]
-    port = 7001
-
-  [services.concurrency]
-    type = 'connections'
-    hard_limit = 25
-    soft_limit = 20
-
+    port = 1234
