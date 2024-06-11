@@ -1,68 +1,71 @@
-kill_signal = "SIGTERM"
-kill_timeout = 2
+# fly.toml app configuration file generated for 1a-access on 2024-06-11T13:59:16Z
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
 
-# frp control plane
-# frp KCP server
+app = '1a-access'
+primary_region = 'cdg'
+kill_signal = 'SIGTERM'
+kill_timeout = '2s'
+
+[build]
+
+[http_service]
+  internal_port = 80
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ['app']
+
+[[vm]]
+  memory = '256mb'
+  cpu_kind = 'shared'
+  cpus = 1
+
 [[services]]
+  protocol = 'udp'
   internal_port = 7000
-  protocol = "udp"
-
-  [services.concurrency]
-    hard_limit = 25
-    soft_limit = 20
-    type = "connections"
 
   [[services.ports]]
     port = 7000
 
-# frp HTTP server (for dashboard or HTTP tunnel)
-[[services]]
-  internal_port = 8080
-  protocol = "tcp"
-
   [services.concurrency]
+    type = 'connections'
     hard_limit = 25
     soft_limit = 20
-    type = "connections"
+
+[[services]]
+  protocol = 'tcp'
+  internal_port = 80
 
   [[services.ports]]
-    handlers = ["http"]
     port = 80
+    handlers = ['http']
 
   [[services.ports]]
-    handlers = ["tls", "http"]
     port = 443
+    handlers = ['tls', 'http']
+
+  [services.concurrency]
+    type = 'connections'
+    hard_limit = 25
+    soft_limit = 20
 
   [[services.tcp_checks]]
-    grace_period = "1s"
-    interval = "1m"
-    restart_limit = 0
-    timeout = "2s"
+    interval = '1m0s'
+    timeout = '2s'
+    grace_period = '1s'
 
-# frp XTCP P2P (requires bind_addr = fly-global-services in frps.ini)
 [[services]]
+  protocol = 'udp'
   internal_port = 7001
-  protocol = "udp"
-
-  [services.concurrency]
-    hard_limit = 25
-    soft_limit = 20
-    type = "connections"
 
   [[services.ports]]
     port = 7001
 
-# frp data plane
+  [services.concurrency]
+    type = 'connections'
+    hard_limit = 25
+    soft_limit = 20
 
-# frp UDP tunnel (example for Minecraft Bedrock server, requires proxy_bind_addr = fly-global-services in frps.ini)
-#[[services]]
-#  internal_port = 19132
-#  protocol = "udp"
-#
-#  [services.concurrency]
-#    hard_limit = 25
-#    soft_limit = 20
-#    type = "connections"
-#
-#  [[services.ports]]
-#    port = 19132
