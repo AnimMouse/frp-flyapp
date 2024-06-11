@@ -20,7 +20,8 @@ enable_prometheus = false
 # Data plane binding
 # For TCP tunnels, set to 0.0.0.0 (or :: in IPv6)
 # For UDP tunnels, set to fly-global-services
-proxy_bind_addr = fly-global-services
+proxy_bind_addr = ::
+proxy_bind_addr_udp = fly-global-services
 
 # frp authentication
 authentication_method = token

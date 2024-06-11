@@ -54,7 +54,7 @@ You can also use TCP if KCP is not working for you. Check the [wiki](https://git
 ## XTCP P2P
 You can use this frp tunnel like a STUN server. `bind_addr` should be set in `fly-global-services` in order for XTCP to work. This feature is enabled by default.
 
-## Example frpc.ini
+## Example frpc.toml
 ```ini
 [common]
 server_addr = app-name.fly.dev
