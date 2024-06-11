@@ -1,7 +1,7 @@
 [common]
 # Control plane binding
 # frp KCP connection
-bind_addr = fly-global-services
+bind_addr = "fly-global-services"
 kcp_bind_port = 7000
 # frp XTCP P2P connection
 bind_udp_port = 7001
@@ -11,7 +11,7 @@ bind_udp_port = 7001
 #bind_port = 7000
 
 # frp dashboard
-dashboard_addr = ::
+dashboard_addr = "::"
 dashboard_port = 80
 dashboard_user = {{ .Envs.FRP_DASH_USER }}
 dashboard_pwd = {{ .Envs.FRP_DASH_PWD }}
@@ -20,9 +20,9 @@ enable_prometheus = false
 # Data plane binding
 # For TCP tunnels, set to 0.0.0.0 (or :: in IPv6)
 # For UDP tunnels, set to fly-global-services
-proxy_bind_addr = 0.0.0.0
-#proxy_bind_addr_udp = fly-global-services
+proxy_bind_addr = ""
+proxy_bind_addr_udp = fly-global-services
 
 # frp authentication
-authentication_method = token
+authentication_method = "token"
 token = {{ .Envs.FRP_TOKEN }}

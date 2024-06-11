@@ -68,3 +68,7 @@ kill_timeout = '2s'
   internal_port = 1234
   [[services.ports]]
     port = 1234
+  [services.concurrency]
+    type = 'connections'
+    hard_limit = 25
+    soft_limit = 20

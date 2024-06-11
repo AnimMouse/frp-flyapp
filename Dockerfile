@@ -8,7 +8,6 @@ COPY frps.toml .
 CMD ["/app/frps","-c","/app/frps.toml"]
 
 EXPOSE 80/tcp
-#EXPOSE 443/tcp
 
 # listener
 EXPOSE 7000/udp
