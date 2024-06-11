@@ -1,7 +1,9 @@
 FROM alpine:latest
 ENV VERSION 0.58.1
 WORKDIR /app/
-COPY frps /app/frps
+#RUN apk add go git && git clone https://github.com/iacore/frp.git && cd frp && go build ./cmd/frps && cp frps ..
+COPY frps .
+RUN chmod +x frps
 COPY frps.toml .
 CMD ["/app/frps","-c","/app/frps.toml"]
 
