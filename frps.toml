@@ -13,16 +13,16 @@ bind_udp_port = 7001
 # frp dashboard
 dashboard_addr = "::"
 dashboard_port = 80
-dashboard_user = {{ .Envs.FRP_DASH_USER }}
-dashboard_pwd = {{ .Envs.FRP_DASH_PWD }}
+dashboard_user = "{{ .Envs.FRP_DASH_USER }}"
+dashboard_pwd = "{{ .Envs.FRP_DASH_PWD }}"
 enable_prometheus = false
 
 # Data plane binding
 # For TCP tunnels, set to 0.0.0.0 (or :: in IPv6)
 # For UDP tunnels, set to fly-global-services
-proxy_bind_addr = ""
-proxy_bind_addr_udp = fly-global-services
+proxy_bind_addr = "0.0.0.0"
+proxy_bind_addr_udp = "fly-global-services"
 
 # frp authentication
 authentication_method = "token"
-token = {{ .Envs.FRP_TOKEN }}
+token = "{{ .Envs.FRP_TOKEN }}"
