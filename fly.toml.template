@@ -1,5 +1,5 @@
 kill_signal = "SIGTERM"
-kill_timeout = 120
+kill_timeout = 2
 
 # frp control plane
 # frp KCP server
