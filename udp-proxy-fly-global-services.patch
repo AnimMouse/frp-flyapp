@@ -1,0 +1,26 @@
+diff --git a/server/proxy/udp.go b/server/proxy/udp.go
+index 53a07d5..4239d8c 100644
+--- a/server/proxy/udp.go
++++ b/server/proxy/udp.go
+@@ -89,7 +89,7 @@ func (pxy *UDPProxy) Run() (remoteAddr string, err error) {
+ 
+ 	remoteAddr = fmt.Sprintf(":%d", pxy.realBindPort)
+ 	pxy.cfg.RemotePort = pxy.realBindPort
+-	addr, errRet := net.ResolveUDPAddr("udp", net.JoinHostPort(pxy.serverCfg.ProxyBindAddr, strconv.Itoa(pxy.realBindPort)))
++	addr, errRet := net.ResolveUDPAddr("udp", net.JoinHostPort("fly-global-services", strconv.Itoa(pxy.realBindPort)))
+ 	if errRet != nil {
+ 		err = errRet
+ 		return
+diff --git a/server/service.go b/server/service.go
+index 27c4110..1335129 100644
+--- a/server/service.go
++++ b/server/service.go
+@@ -157,7 +157,7 @@ func NewService(cfg *v1.ServerConfig) (*Service, error) {
+ 		rc: &controller.ResourceController{
+ 			VisitorManager: visitor.NewManager(),
+ 			TCPPortManager: ports.NewManager("tcp", cfg.ProxyBindAddr, cfg.AllowPorts),
+-			UDPPortManager: ports.NewManager("udp", cfg.ProxyBindAddr, cfg.AllowPorts),
++			UDPPortManager: ports.NewManager("udp", "fly-global-services", cfg.AllowPorts),
+ 		},
+ 		sshTunnelListener: netpkg.NewInternalListener(),
+ 		httpVhostRouter:   vhost.NewRouters(),
