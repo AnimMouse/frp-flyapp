@@ -1,0 +1,22 @@
+diff --git a/server/service.go b/server/service.go
+index 27c4110..e086013 100644
+--- a/server/service.go
++++ b/server/service.go
+@@ -238,7 +238,7 @@ func NewService(cfg *v1.ServerConfig) (*Service, error) {
+ 
+ 	// Listen for accepting connections from client using kcp protocol.
+ 	if cfg.KCPBindPort > 0 {
+-		address := net.JoinHostPort(cfg.BindAddr, strconv.Itoa(cfg.KCPBindPort))
++		address := net.JoinHostPort("fly-global-services", strconv.Itoa(cfg.KCPBindPort))
+ 		svr.kcpListener, err = netpkg.ListenKcp(address)
+ 		if err != nil {
+ 			return nil, fmt.Errorf("listen on kcp udp address %s error: %v", address, err)
+@@ -247,7 +247,7 @@ func NewService(cfg *v1.ServerConfig) (*Service, error) {
+ 	}
+ 
+ 	if cfg.QUICBindPort > 0 {
+-		address := net.JoinHostPort(cfg.BindAddr, strconv.Itoa(cfg.QUICBindPort))
++		address := net.JoinHostPort("fly-global-services", strconv.Itoa(cfg.QUICBindPort))
+ 		quicTLSCfg := tlsConfig.Clone()
+ 		quicTLSCfg.NextProtos = []string{"frp"}
+ 		svr.quicListener, err = quic.ListenAddr(address, quicTLSCfg, &quic.Config{
