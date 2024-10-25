@@ -6,8 +6,22 @@ kill_timeout = "2m0s"
 [http_service]
   internal_port = 8080
   force_https = true
+
   [http_service.concurrency]
     type = "requests"
+    hard_limit = 25
+    soft_limit = 20
+
+# frp TCP server
+[[services]]
+  protocol = "tcp"
+  internal_port = 7000
+
+  [[services.ports]]
+    port = 7000
+
+  [services.concurrency]
+    type = "connections"
     hard_limit = 25
     soft_limit = 20
 
@@ -18,6 +32,7 @@ kill_timeout = "2m0s"
 
   [[services.ports]]
     port = 7000
+
   [services.concurrency]
     type = "connections"
     hard_limit = 25
@@ -30,49 +45,39 @@ kill_timeout = "2m0s"
 
   [[services.ports]]
     port = 7001
+
   [services.concurrency]
     type = "connections"
     hard_limit = 25
     soft_limit = 20
 
-# frp TCP server
-#[[services]]
-#  protocol = "tcp"
-#  internal_port = 7000
-#
-#  [[services.ports]]
-#    port = 7000
-#  [services.concurrency]
-#    type = "connections"
-#    hard_limit = 25
-#    soft_limit = 20
-
 # frp data plane
-# frp TCP tunnel (example for Minecraft Java server, requires proxyBindAddr = "0.0.0.0" (or "::" in IPv6) in frps.toml)
+# frp TCP tunnel (example for Minecraft Java server)
 [[services]]
   protocol = "tcp"
   internal_port = 25565
 
   [[services.ports]]
     port = 25565
+
   [services.concurrency]
     type = "connections"
     hard_limit = 25
     soft_limit = 20
 
-# frp UDP tunnel (example for Minecraft Bedrock server, requires proxyBindAddr = "fly-global-services" in frps.toml)
-#[[services]]
-#  protocol = "udp"
-#  internal_port = 19132
-#
-#  [[services.ports]]
-#    port = 19132
-#  [services.concurrency]
-#    type = "connections"
-#    hard_limit = 25
-#    soft_limit = 20
+# frp UDP tunnel (example for Minecraft Bedrock server)
+[[services]]
+  protocol = "udp"
+  internal_port = 19132
+
+  [[services.ports]]
+    port = 19132
+
+  [services.concurrency]
+    type = "connections"
+    hard_limit = 25
+    soft_limit = 20
 
 [[vm]]
-  cpu_kind = "shared"
-  cpus = 1
+  size = "shared-cpu-1x"
   memory_mb = 256
