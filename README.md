@@ -61,17 +61,15 @@ fly.io runs app 24/7, if you are not using your tunnel for a while, it is recomm
 * Suspend frp `fly scale count 0 -a app-name`
 * Resume frp `fly scale count 1 -a app-name`
 
-## TCP or UDP tunnel, not both
-Since in fly.io, it is [required to bind to `fly-global-services`](https://fly.io/docs/app-guides/udp-and-tcp/#the-fly-global-services-address) in order for UDP to work, but frp's `proxyBindAddr` only allow to bind in one address, so we need to disable TCP if you want to use UDP as TCP does not work on `fly-global-services`.
+## Patched frp to support TCP and UDP tunnel
+Since in fly.io, it is [required to bind to `fly-global-services`](https://fly.io/docs/networking/udp-and-tcp/#your-app-needs-to-bind-to-the-fly-global-services-address) in order for UDP to work, but frp's `proxyBindAddr` only allow to bind in one address, so we patched frp to make its UDP proxy to listen to `fly-global-services`.
 
-You need to have a separate frp instance if you need to tunnel both TCP and UDP. One for TCP using `proxyBindAddr = "0.0.0.0"` and one for UDP using `proxyBindAddr = "fly-global-services"`.
-
-## KCP Protocol
-[KCP](https://github.com/skywind3000/kcp/blob/master/README.en.md) (a protocol built on UDP) is used by default and to reduce latency (like for game servers).
-
-You can also use TCP if KCP is not working for you. Check the [wiki](https://github.com/AnimMouse/frp-flyapp/wiki/Use-TCP-in-control-plane) for tutorial.
+If somehow frp diverged so much that the patch gets broken, just remote the patch on Dockerfile.
 
 ## Example frpc.toml
+### KCP Protocol
+[KCP](https://github.com/skywind3000/kcp/blob/master/README.en.md) (a protocol built on UDP) is used by default and to reduce latency (like for game servers).
+
 ```toml
 serverAddr = "app-name.fly.dev"
 auth.token = "12345678"
@@ -84,7 +82,11 @@ transport.protocol = "kcp"
 #serverPort = 7001
 #transport.protocol = "quic"
 
-# TCP tunnel, requires proxyBindAddr = "0.0.0.0" in frps.toml
+# TCP connection
+#serverPort = 7000
+#transport.protocol = "tcp"
+
+# TCP tunnel
 [[proxies]]
 name = "minecraft-java"
 type = "tcp"
@@ -92,7 +94,7 @@ localIP = "127.0.0.1"
 localPort = 25565
 remotePort = 25565
 
-# UDP tunnel, requires proxyBindAddr = "fly-global-services" in frps.toml
+# UDP tunnel
 [[proxies]]
 name = "minecraft-bedrock"
 type = "udp"
@@ -118,7 +120,7 @@ To enable IPv6 in control plane, set `bindAddr = "::"` in frps.toml. Take note t
 
 To enable IPv6 in data plane, set `proxyBindAddr = "::"` in frps.toml and `localIP = "::1"` in frpc.toml. Take note that UDP does not work in IPv6 as [`fly-global-services` does not support IPv6] so you can't tunnel UDP in IPv6.
 
-[`fly-global-services` does not support IPv6]: https://fly.io/docs/app-guides/udp-and-tcp/#udp-wont-work-over-ipv6
+[`fly-global-services` does not support IPv6]: https://fly.io/docs/networking/udp-and-tcp/#your-app-needs-to-bind-to-the-fly-global-services-address
 
 ### More infos
 * [anderspitman/awesome-tunneling](https://github.com/anderspitman/awesome-tunneling)
