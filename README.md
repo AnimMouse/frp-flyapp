@@ -120,7 +120,7 @@ To enable IPv6 in control plane, set `bindAddr = "::"` in frps.toml. Take note t
 
 To enable IPv6 in data plane, set `proxyBindAddr = "::"` in frps.toml and `localIP = "::1"` in frpc.toml. Take note that UDP does not work in IPv6 as [`fly-global-services` does not support IPv6] so you can't tunnel UDP in IPv6.
 
-[`fly-global-services` does not support IPv6]: https://fly.io/docs/networking/udp-and-tcp/#your-app-needs-to-bind-to-the-fly-global-services-address
+[`fly-global-services` does not support IPv6]: https://fly.io/docs/networking/udp-and-tcp/#you-need-a-dedicated-ipv4-address
 
 ### More infos
 * [anderspitman/awesome-tunneling](https://github.com/anderspitman/awesome-tunneling)
