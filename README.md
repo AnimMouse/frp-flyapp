@@ -30,10 +30,11 @@ flowchart LR
 5. Login to flyctl by using `fly auth login` or you can generate [access tokens](https://fly.io/user/personal_access_tokens) and paste it to `FLY_API_TOKEN` in Codespaces secrets.
 6. Create an app on fly.io `fly launch --copy-config --name <app-name> --no-deploy`.
 7. When asked to tweak these settings before proceeding, enter yes if you want to tweak settings like selecting the region closest to you, otherwise, enter no.
-8. Set environment variables for frp server. `fly secrets set -a <app-name> FRP_TOKEN=12345678 FRP_DASHBOARD_PWD=admin`
-9. Deploy to fly.io `fly deploy -a <app-name> --ha=false`.
-10. When asked to allocate a dedicated IPv4 address, enter yes.
-11. Try to connect to frps using the [example frpc.toml](#example-frpctoml).
+8. Restore fly.toml `git restore fly.toml`.
+9. Set environment variables for frp server. `fly secrets set -a <app-name> FRP_TOKEN=12345678 FRP_DASHBOARD_PWD=admin`
+10. Deploy to fly.io `fly deploy -a <app-name> --ha=false`.
+11. When asked to allocate a dedicated IPv4 address, enter yes.
+12. Try to connect to frps using the [example frpc.toml](#example-frpctoml).
 
 ### Local
 You need [flyctl](https://github.com/superfly/flyctl) installed.
@@ -43,10 +44,11 @@ You need [flyctl](https://github.com/superfly/flyctl) installed.
 3. Login to flyctl by using `fly auth login`.
 4. Create an app on fly.io `fly launch --copy-config --name <app-name> --no-deploy`.
 5. When asked to tweak these settings before proceeding, enter yes if you want to tweak settings like selecting the region closest to you, otherwise, enter no.
-6. Set environment variables for frp server. `fly secrets set -a <app-name> FRP_TOKEN=12345678 FRP_DASHBOARD_PWD=admin`
-7. Deploy to fly.io `fly deploy -a <app-name> --ha=false`.
-8. When asked to allocate a dedicated IPv4 address, enter yes.
-9. Try to connect to frps using the [example frpc.toml](#example-frpctoml).
+6. Restore fly.toml `git restore fly.toml`.
+7. Set environment variables for frp server. `fly secrets set -a <app-name> FRP_TOKEN=12345678 FRP_DASHBOARD_PWD=admin`
+8. Deploy to fly.io `fly deploy -a <app-name> --ha=false`.
+9. When asked to allocate a dedicated IPv4 address, enter yes.
+10. Try to connect to frps using the [example frpc.toml](#example-frpctoml).
 
 Don't forget to change the `<app-name>` and the `FRP_TOKEN` so that others can't use your frp tunnel.
 
@@ -104,7 +106,7 @@ remotePort = 19132
 ```
 
 ### fly.io free tier
-fly.io requires a credit card in order to work, if you don't have a credit card or if you are afraid that fly.io will charge you so much, it is recommended to buy prepaid credits that can be used with virtual credit cards.
+fly.io requires a credit card in order to work, if you don't have a credit card or if you are afraid that fly.io will charge you so much, it is recommended to buy [prepaid credits](https://fly.io/docs/about/billing/#if-you-dont-have-a-credit-card) that can be used with virtual credit cards.
 
 ### HTTP tunneling
 If you are tunneling HTTP apps instead of TCP/UDP, I recommend to just use [Cloudflare Tunnel](https://www.cloudflare.com/products/tunnel/).\
